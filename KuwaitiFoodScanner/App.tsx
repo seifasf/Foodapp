@@ -1,118 +1,156 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StatusBar } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Import screens
+import HomeScreen from './src/screens/HomeScreen';
+import ScannerScreen from './src/screens/ScannerScreen';
+import ProductScreen from './src/screens/ProductScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import PricingScreen from './src/screens/PricingScreen';
+import OnboardingScreen from './src/screens/OnboardingScreen';
+import RestaurantScreen from './src/screens/RestaurantScreen';
+import CartScreen from './src/screens/CartScreen';
+import PriceComparisonScreen from './src/screens/PriceComparisonScreen';
+import PriceSubmissionScreen from './src/screens/PriceSubmissionScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// Import context
+import { CartProvider } from './src/contexts/CartContext';
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Import theme
+import { theme } from './src/styles/theme';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+// Main Tab Navigator
+function MainTabs() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: string;
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+          if (route.name === 'Home') {
+            iconName = 'home';
+          } else if (route.name === 'Scanner') {
+            iconName = 'qr-code-scanner';
+          } else if (route.name === 'Pricing') {
+            iconName = 'trending-up';
+          } else if (route.name === 'Profile') {
+            iconName = 'person';
+          } else {
+            iconName = 'help';
+          }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.gray,
+        tabBarStyle: {
+          backgroundColor: theme.colors.white,
+          borderTopColor: theme.colors.lightGray,
+        },
+        headerStyle: {
+          backgroundColor: theme.colors.primary,
+        },
+        headerTintColor: theme.colors.white,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      })}
+    >
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{ title: 'الرئيسية' }}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <Tab.Screen 
+        name="Scanner" 
+        component={ScannerScreen}
+        options={{ title: 'الماسح' }}
+      />
+      <Tab.Screen 
+        name="Pricing" 
+        component={PricingScreen}
+        options={{ title: 'الأسعار' }}
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={ProfileScreen}
+        options={{ title: 'الملف الشخصي' }}
+      />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+// Main App Component
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <CartProvider>
+          <NavigationContainer>
+            <StatusBar 
+              barStyle="light-content" 
+              backgroundColor={theme.colors.primary} 
+            />
+            <Stack.Navigator 
+              initialRouteName="Onboarding"
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: theme.colors.primary,
+                },
+                headerTintColor: theme.colors.white,
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+              }}
+            >
+            <Stack.Screen 
+              name="Onboarding" 
+              component={OnboardingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="Main" 
+              component={MainTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="Product" 
+              component={ProductScreen}
+              options={{ title: 'معلومات المنتج' }}
+            />
+            <Stack.Screen 
+              name="Restaurant" 
+              component={RestaurantScreen}
+              options={{ title: 'معلومات المطعم' }}
+            />
+            <Stack.Screen 
+              name="Cart" 
+              component={CartScreen}
+              options={{ title: 'سلة التسوق' }}
+            />
+            <Stack.Screen 
+              name="PriceComparison" 
+              component={PriceComparisonScreen}
+              options={{ title: 'مقارنة الأسعار' }}
+            />
+            <Stack.Screen 
+              name="PriceSubmission" 
+              component={PriceSubmissionScreen}
+              options={{ title: 'إرسال سعر' }}
+            />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </CartProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
+  );
+}
