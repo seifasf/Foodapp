@@ -60,7 +60,27 @@ const HomeScreen: React.FC = () => {
       icon: 'compare',
       color: theme.colors.secondary,
       onPress: () => {
-        Alert.alert('قريباً', 'ستكون هذه الميزة متاحة قريباً');
+        navigation.navigate('PriceComparison');
+      },
+    },
+    {
+      id: 'submit_price',
+      title: 'إرسال سعر',
+      titleAr: 'إرسال سعر',
+      icon: 'add-circle',
+      color: theme.colors.accent,
+      onPress: () => {
+        navigation.navigate('EnhancedPriceSubmission');
+      },
+    },
+    {
+      id: 'leaderboard',
+      title: 'قائمة المتصدرين',
+      titleAr: 'قائمة المتصدرين',
+      icon: 'leaderboard',
+      color: theme.colors.info,
+      onPress: () => {
+        navigation.navigate('Leaderboard');
       },
     },
     {
@@ -68,19 +88,19 @@ const HomeScreen: React.FC = () => {
       title: 'ماكدونالدز',
       titleAr: 'ماكدونالدز',
       icon: 'fastfood',
-      color: theme.colors.accent,
+      color: theme.colors.warning,
       onPress: () => {
         navigation.navigate('Restaurant', { restaurantId: 'mcdonalds' });
       },
     },
     {
-      id: 'favorites',
-      title: 'المفضلة',
-      titleAr: 'المفضلة',
-      icon: 'favorite',
-      color: theme.colors.info,
+      id: 'user_profile',
+      title: 'الملف الشخصي',
+      titleAr: 'الملف الشخصي',
+      icon: 'person',
+      color: theme.colors.success,
       onPress: () => {
-        Alert.alert('قريباً', 'ستكون هذه الميزة متاحة قريباً');
+        navigation.navigate('UserProfile');
       },
     },
   ];

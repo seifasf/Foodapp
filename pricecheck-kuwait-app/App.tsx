@@ -18,6 +18,9 @@ import RestaurantScreen from './src/screens/RestaurantScreen';
 import CartScreen from './src/screens/CartScreen';
 import PriceComparisonScreen from './src/screens/PriceComparisonScreen';
 import PriceSubmissionScreen from './src/screens/PriceSubmissionScreen';
+import UserProfileScreen from './src/screens/UserProfileScreen';
+import EnhancedPriceSubmissionScreen from './src/screens/EnhancedPriceSubmissionScreen';
+import LeaderboardScreen from './src/screens/LeaderboardScreen';
 
 // Import context
 import { CartProvider } from './src/contexts/CartContext';
@@ -146,6 +149,21 @@ export default function App() {
               name="PriceSubmission" 
               component={PriceSubmissionScreen}
               options={{ title: 'إرسال سعر' }}
+            />
+            <Stack.Screen 
+              name="UserProfile" 
+              component={UserProfileScreen}
+              options={{ title: 'الملف الشخصي' }}
+            />
+            <Stack.Screen 
+              name="EnhancedPriceSubmission" 
+              component={EnhancedPriceSubmissionScreen}
+              options={{ title: 'إرسال سعر متقدم' }}
+            />
+            <Stack.Screen 
+              name="Leaderboard" 
+              component={LeaderboardScreen}
+              options={{ title: 'قائمة المتصدرين' }}
             />
             </Stack.Navigator>
           </NavigationContainer>
