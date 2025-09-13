@@ -1,9 +1,9 @@
-import { DefaultTheme } from 'react-native-paper';
+import { MD2LightTheme } from 'react-native-paper';
 
 export const theme = {
-  ...DefaultTheme,
+  ...MD2LightTheme,
   colors: {
-    ...DefaultTheme.colors,
+    ...MD2LightTheme.colors,
     // Phase 1: Grayscale theme (no colors as requested)
     primary: '#424242', // Dark gray
     secondary: '#616161', // Medium gray

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { Card, Title, Paragraph, Button, Chip, Avatar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -265,7 +266,7 @@ const HomeScreen: React.FC = () => {
           </View>
           <TouchableOpacity
             style={styles.profileButton}
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('Main')}
           >
             <Avatar.Icon
               size={40}

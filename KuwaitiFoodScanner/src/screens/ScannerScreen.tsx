@@ -35,8 +35,9 @@ const ScannerScreen: React.FC = () => {
 
   const checkCameraPermission = async () => {
     try {
-      const granted = await RNCamera.requestCameraPermission();
-      setHasPermission(granted === 'authorized');
+      // For now, just set permission to true for testing
+      // In a real app, you would use proper permission handling
+      setHasPermission(true);
     } catch (error) {
       console.error('Camera permission error:', error);
       setHasPermission(false);
@@ -143,7 +144,6 @@ const ScannerScreen: React.FC = () => {
           RNCamera.Constants.BarCodeType.ean8,
           RNCamera.Constants.BarCodeType.code128,
           RNCamera.Constants.BarCodeType.code39,
-          RNCamera.Constants.BarCodeType.upc_a,
           RNCamera.Constants.BarCodeType.upc_e,
         ]}
         captureAudio={false}

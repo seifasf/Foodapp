@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { Cart, CartItem, MenuItem, Restaurant } from '../types';
+import { CartItem, MenuItem } from '../types';
 
 interface CartState {
   items: CartItem[];
@@ -9,7 +9,10 @@ interface CartState {
 }
 
 type CartAction =
-  | { type: 'ADD_ITEM'; payload: { menuItem: MenuItem; restaurantId: string; quantity?: number } }
+  | {
+      type: 'ADD_ITEM';
+      payload: { menuItem: MenuItem; restaurantId: string; quantity?: number };
+    }
   | { type: 'REMOVE_ITEM'; payload: { itemId: string } }
   | { type: 'UPDATE_QUANTITY'; payload: { itemId: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -17,7 +20,11 @@ type CartAction =
 
 interface CartContextType {
   state: CartState;
-  addItem: (menuItem: MenuItem, restaurantId: string, quantity?: number) => void;
+  addItem: (
+    menuItem: MenuItem,
+    restaurantId: string,
+    quantity?: number,
+  ) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -31,18 +38,20 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
     case 'ADD_ITEM': {
       const { menuItem, restaurantId, quantity = 1 } = action.payload;
-      
+
       // Check if we're adding from a different restaurant
       if (state.restaurantId && state.restaurantId !== restaurantId) {
         // Clear cart if adding from different restaurant
         return {
-          items: [{
-            id: `${Date.now()}-${Math.random()}`,
-            menuItemId: menuItem.id,
-            restaurantId,
-            quantity,
-            addedAt: new Date(),
-          }],
+          items: [
+            {
+              id: `${Date.now()}-${Math.random()}`,
+              menuItemId: menuItem.id,
+              restaurantId,
+              quantity,
+              addedAt: new Date(),
+            },
+          ],
           totalItems: quantity,
           totalPrice: menuItem.priceComparisons[0]?.price || 0,
           restaurantId,
@@ -51,19 +60,21 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
       // Check if item already exists
       const existingItemIndex = state.items.findIndex(
-        item => item.menuItemId === menuItem.id
+        item => item.menuItemId === menuItem.id,
       );
 
       if (existingItemIndex >= 0) {
         // Update existing item quantity
         const updatedItems = [...state.items];
         updatedItems[existingItemIndex].quantity += quantity;
-        
+
         return {
           ...state,
           items: updatedItems,
           totalItems: state.totalItems + quantity,
-          totalPrice: state.totalPrice + (menuItem.priceComparisons[0]?.price || 0) * quantity,
+          totalPrice:
+            state.totalPrice +
+            (menuItem.priceComparisons[0]?.price || 0) * quantity,
         };
       } else {
         // Add new item
@@ -79,18 +90,24 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
           ...state,
           items: [...state.items, newItem],
           totalItems: state.totalItems + quantity,
-          totalPrice: state.totalPrice + (menuItem.priceComparisons[0]?.price || 0) * quantity,
+          totalPrice:
+            state.totalPrice +
+            (menuItem.priceComparisons[0]?.price || 0) * quantity,
           restaurantId: state.restaurantId || restaurantId,
         };
       }
     }
 
     case 'REMOVE_ITEM': {
-      const itemToRemove = state.items.find(item => item.id === action.payload.itemId);
+      const itemToRemove = state.items.find(
+        item => item.id === action.payload.itemId,
+      );
       if (!itemToRemove) return state;
 
-      const updatedItems = state.items.filter(item => item.id !== action.payload.itemId);
-      const itemPrice = itemToRemove.quantity * (itemToRemove.quantity * 0); // This would need actual price calculation
+      const updatedItems = state.items.filter(
+        item => item.id !== action.payload.itemId,
+      );
+      const itemPrice = itemToRemove.quantity * 0; // This would need actual price calculation
 
       return {
         ...state,
@@ -109,15 +126,20 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
       const updatedItems = state.items.map(item => {
         if (item.id === itemId) {
-          const quantityDiff = quantity - item.quantity;
           return { ...item, quantity };
         }
         return item;
       });
 
       // Recalculate totals (simplified - would need actual price calculation)
-      const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
-      const totalPrice = updatedItems.reduce((sum, item) => sum + (item.quantity * 0), 0); // Placeholder
+      const totalItems = updatedItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0,
+      );
+      const totalPrice = updatedItems.reduce(
+        (sum, item) => sum + item.quantity * 0,
+        0,
+      ); // Placeholder
 
       return {
         ...state,
@@ -153,11 +175,16 @@ const initialState: CartState = {
   restaurantId: null,
 };
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   const addItem = (menuItem: MenuItem, restaurantId: string, quantity = 1) => {
-    dispatch({ type: 'ADD_ITEM', payload: { menuItem, restaurantId, quantity } });
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: { menuItem, restaurantId, quantity },
+    });
   };
 
   const removeItem = (itemId: string) => {

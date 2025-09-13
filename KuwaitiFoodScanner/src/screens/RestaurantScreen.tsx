@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import { Card, Title, Paragraph, Button, Chip, Avatar, Divider, Badge } from 'react-native-paper';
+import { Card, Title, Paragraph, Button, Chip, Avatar, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -223,9 +223,9 @@ const RestaurantScreen: React.FC = () => {
                     {price.price} + {price.deliveryFee} + {price.serviceFee}
                   </Text>
                   {bestPrice?.appId === price.appId && (
-                    <Badge style={styles.bestPriceBadge}>
+                    <View style={styles.bestPriceBadge}>
                       <Text style={styles.bestPriceBadgeText}>أفضل سعر</Text>
-                    </Badge>
+                    </View>
                   )}
                 </TouchableOpacity>
               ))}
