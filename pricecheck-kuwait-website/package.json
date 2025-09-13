@@ -1,0 +1,20 @@
+{
+  "name": "pricecheck-kuwait-website",
+  "version": "1.0.0",
+  "description": "PriceCheck Kuwait - Official Website",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "kuwait",
+    "food",
+    "price",
+    "comparison",
+    "delivery",
+    "app"
+  ],
+  "author": "PriceCheck Kuwait Team",
+  "license": "MIT"
+}
